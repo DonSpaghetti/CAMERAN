@@ -10,7 +10,7 @@ import asyncio
 token = open('token.txt', 'r').read()
 
 class CAMERAN(discord.Client):
-    bot = commands.Bot(command_prefix='$', description='I hunger...f̹͕̞͖̦̗̗̹͜͡o̶͉r͇͖̹̤̣ ̫̜͈̝͡ç͔̻̮̼̬̗̕o͖͕̜͍͙͉̹͎n҉͍̬̩̮̼̗͖́c͔̗̣̤̦į̗̱̝̞̞̱̺͔͡o̻͓̲͢͠u̶̸͔̟͓s̨̬̯͙̭͇͈͝n͇̯͉̳̰̙̕ḙ̵̖̦̘͚͕̼͠ͅs̜̘͕̦̺̪̙̰s̶̴͉͙̤̦͎͓̗.̢͎̞̼̺͎̱͔̰.̹̞̫.̡̥͍̀.̨̹̗')
+    bot = commands.Bot(command_prefix='$', description='something better')
     
     @bot.event
     async def on_ready(self):
