@@ -31,5 +31,21 @@ class CAMERAN(discord.Client):
         elif message.content.startswith('ayy'.lower()):
             await message.channel.send('lmao')
 
+        elif 'move to austin' in message.content.lower():
+            await message.channel.send('https://us.v-cdn.net/6025735/uploads/editor/88/lsb0v3uh7swy.gif')
+
+        elif 'i like attack on titan' in message.content.lower():
+            await message.channel.send('https://i.imgur.com/4dznW7t.png')
+
+        elif 'good bot' in message.content.lower():
+            await message.channel.send('arigato gozaimasu senpai <3 uwu')
+
+        elif 'eat cheese live forever' in message.content.lower():
+            await message.channel.send('EAT CHEESE NEVER DIE')
+
+        elif 'drink seltzer live forever' in message.content.lower():
+            await message.channel.send('DRINK SELTZER NEVER DIE')
+
+
 client = CAMERAN()
 client.run(token)
