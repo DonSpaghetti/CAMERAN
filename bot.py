@@ -2,9 +2,12 @@ import discord
 from discord.ext import commands
 import asyncio
 import random
+import re
+import json
+import requests
+
 from components.botbrain import BotBrain
 from components.warframe import Warframe
-import uuid
 from datetime import datetime
 
 
@@ -108,6 +111,62 @@ async def war(ctx, subCommand: str):
     else:
         await ctx.send("This isn't a valid command. Do you expect me to work using this?")
         await asyncio.sleep(1)
+
+@bot.command()
+async def wfmarket(ctx, item: str):
+    '''
+    Returns the top 5 prices from the searched item.
+    '''
+    itemOriginal = item
+    itemMod = item.replace(' ', '_')
+    itemModLow = itemMod.lower()
+    itemUrl = 'http://api.warframe.market/v1/items/' + itemModLow + '/orders'
+    itemLoad = requests.get(url=itemUrl)
+    if itemLoad.status_code == 404:
+        await ctx.send("This isn't a valid item. You expect me to serve food using this?")
+
+    else:
+        # I was high when i did this. Sorry. (> )>
+        x = 0
+        y = 0
+        top5 = []
+        itemLoad = itemLoad.text
+        url = json.loads(itemLoad)
+        item = await Warframe.bestPriceFor(url)
+        itemList = re.split("{|}", item)
+        while x < len(itemList):
+            top5.append(itemList[x])
+            x = x + 1
+        t5str = str(top5)
+        tSub5str = re.sub("[\"/!@#$':]", '', t5str)
+        t5fix = tSub5str.replace("[[, ", "").replace(", ]]", "")
+        top10 = list(t5fix.split(","))
+        embed = discord.Embed(title="Top 5", description="Top 5 Prices for " + itemOriginal, color=0xff69B4)
+
+        while y < len(top10):
+            embed.add_field(name=str(top10[y].replace('Username ', '')), value=str(top10[y+1]), inline=False)
+            y = y + 4
+
+        await ctx.send(embed=embed)
+    await asyncio.sleep(1)
+    
+@bot.command()
+async def cat(ctx):
+    '''
+    A random cat
+    '''
+    cat = await BotBrain.rcat('')
+    await ctx.send(cat + ' :ramen: おあがりよ!')
+    await asyncio.sleep(1)
+
+@bot.command()
+async def awoo(ctx):
+    '''
+    A random inferior creature
+    '''
+    awoo = await BotBrain.rdog('')
+    await ctx.send(awoo + ' :ramen: おあがりよ!')
+    await asyncio.sleep(1)
 
 # CAMERAN on_message custom functions.
 @bot.event
