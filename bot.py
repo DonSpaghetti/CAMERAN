@@ -57,9 +57,16 @@ async def on_message(message):
     # we do not want the bot to reply to itself
     if message.author.id == bot.user.id:
         return
-
+    print(f"{message.channel}, {message.author}, {message.author.name}, {message.content}")
+    if message.author.id == bot.user.id:
+        return
+    elif message.content.startswith('lmao'.lower()):
+        await message.channel.send('ayy')
+    elif message.content.startswith('ayy'.lower()):
+        await message.channel.send('lmao')
     if message.content.startswith('hello'):
         await message.channel.send('Hello {0.author.mention}'.format(message))
+        
     await bot.wait_until_ready()
     await bot.process_commands(message)
 
