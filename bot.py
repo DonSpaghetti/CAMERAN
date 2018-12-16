@@ -11,10 +11,8 @@ from components.warframe import Warframe
 from datetime import datetime
 
 
-description = '''An example bot to showcase the discord.ext.commands extension
-module.
+description = '''Master Masquerader! Messenger of Memes! CAMERAN!'''
 
-There are a number of utility commands being showcased here.'''
 bot = commands.Bot(command_prefix=('$', '%', 'd$'), description=description)
 filename = 'models/logs/log' + str(datetime.now()) + '.txt'
 
@@ -53,6 +51,15 @@ async def dankbots(ctx):
            + "\nLOUD! BEEPING! NOISES!")
     await ctx.send(msg)
     await asyncio.sleep(1)
+
+@bot.command()
+async def confus(ctx):
+    """
+    Randomly express your befuddlement.
+    """
+    reply = await components.anconfus()
+    await ctx.send(reply)
+    
 
 #Soma2.0 Commands
 @bot.command()
@@ -168,23 +175,38 @@ async def awoo(ctx):
     await ctx.send(awoo + ' :ramen: おあがりよ!')
     await asyncio.sleep(1)
 
-# CAMERAN on_message custom functions.
+# CAMERAN on_message custom functions
 @bot.event
 async def on_message(message):
-    log = open('log.txt', 'w')
     # we do not want the bot to reply to itself
     if message.author.id == bot.user.id:
         return
-    if message.author.id == bot.user.id:
-        return
-    elif message.content.startswith('lmao'.lower()):
-        await message.channel.send('ayy')
-    elif message.content.startswith('ayy'.lower()):
-        await message.channel.send('lmao')
+
     if message.content.startswith('hello'):
         await message.channel.send('Hello {0.author.mention}'.format(message))
-    
+
+    elif message.content.startswith('lmao'.lower()):
+        await message.channel.send('ayy')
+
+    elif message.content.startswith('ayy'.lower()):
+        await message.channel.send('lmao')
+
+    elif 'move to austin' in message.content.lower():
+        await message.channel.send('https://us.v-cdn.net/6025735/uploads/editor/88/lsb0v3uh7swy.gif')
+
+    elif 'i like attack on titan' in message.content.lower():
+        await message.channel.send('https://i.imgur.com/4dznW7t.png')
+
+    elif 'good bot' in message.content.lower():
+        await message.channel.send('arigato gozaimasu senpai <3 uwu')
+
+    elif 'eat cheese live forever' in message.content.lower():
+        await message.channel.send('EAT CHEESE NEVER DIE')
+
+    elif 'drink seltzer live forever' in message.content.lower():
+        await message.channel.send('DRINK SELTZER NEVER DIE')
     print(f"{message.channel}, {message.author}, {message.author.name}, {message.content}", file=open(filename, 'a'))
+
 
     await bot.wait_until_ready()
     await bot.process_commands(message)
