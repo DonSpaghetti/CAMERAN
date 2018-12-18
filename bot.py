@@ -57,7 +57,7 @@ async def confus(ctx):
     """
     Randomly express your befuddlement.
     """
-    reply = await components.anconfus()
+    reply = await BotBrain.anconfus()
     await ctx.send(reply)
     
 
