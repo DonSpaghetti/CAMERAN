@@ -22,6 +22,8 @@ async def on_ready():
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)
+    await BotBrain.getDrinks('')
+    print(await BotBrain.getDrinks(''))
     print('------')
 
 #The following two commands are examples from the discord.py rewrite - will be expanded upon later.
@@ -55,19 +57,26 @@ async def confus(ctx):
     """
     reply = await BotBrain.anconfus('')
     await ctx.send(reply)
-    
+
 @bot.command(aliases=['drink'])
 async def drincc(ctx, *drink: str):
     """
     Booze recipes
     """
     mixedDrink = ' '.join(drink)
+
+    # with open('components/drinks/alcoholic.json', 'r') as f:
+    #     alcoholicDrinks: dict = json.load(f)
+    # with open('components/drinks/non_alcoholic.json', 'r') as f:
+    #     nonAlcoholicDrinks: dict = json.load(f)
+
     y = 0
     if mixedDrink == '':
         await ctx.send("You spilled your drink.")
         return
 
     url = json.loads(requests.get(url='https://www.thecocktaildb.com/api/json/v1/1/search.php?s=' + mixedDrink).text)
+
     if url['drinks'] == None:
         await ctx.send("404 Drink not found, please try again.")
     else:
@@ -210,9 +219,6 @@ async def on_message(message):
     if message.author.id == bot.user.id:
         return
 
-    if message.content.startswith('hello'):
-        await message.channel.send('Hello {0.author.mention}'.format(message))
-
     elif message.content.startswith('lmao'.lower()):
         await message.channel.send('ayy')
 
@@ -235,9 +241,9 @@ async def on_message(message):
         await message.channel.send('DRINK SELTZER NEVER DIE')
     print(f"{message.channel}, {message.author}, {message.author.name}, {message.content}", file=open(filename, 'a'))
 
-
     await bot.wait_until_ready()
     await bot.process_commands(message)
+
 
 token = BotBrain.secrets['CAMERANToken']
 bot.run(token)
