@@ -32,7 +32,7 @@ class BotBrain():
     gameru = Object(id='363477346784903168')
     
     # for the %cook command
-    async def cook(self, fud):
+    async def cook(fud: str):
         result = ''
         search = "http://www.foodnetwork.com/search/"
         food = fud.replace(' ', '-')
@@ -92,11 +92,6 @@ class BotBrain():
             z = 0
         return Drinktionary
 
-    async def rcat(self):
-        url = json.loads(requests.get(url='http://aws.random.cat/meow').text)
-        cat = url['file']
-        return cat
-    
     async def rdog(self):
         url = json.loads(requests.get(url='https://random.dog/woof.json').text)
         dog = url['url']

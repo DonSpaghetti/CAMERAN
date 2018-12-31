@@ -1,5 +1,6 @@
-import discord
 from discord.ext import commands
+
+import discord
 import asyncio
 import random
 import re
@@ -24,7 +25,7 @@ async def on_ready():
     print('------')
 
 #The following two commands are examples from the discord.py rewrite - will be expanded upon later.
-@bot.command()
+@bot.command(aliases=['marshalls-fucking-dice-roll-command'])
 async def roll(ctx, dice: str):
     """Rolls a dice in NdN format."""
     try:
@@ -36,13 +37,8 @@ async def roll(ctx, dice: str):
     result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
     await ctx.send(result)
 
-@bot.command(description='For when you wanna settle the score some other way')
-async def choose(ctx, *choices: str):
-    """Chooses between multiple choices."""
-    await ctx.send(random.choice(choices))
-
 #Dankbot420 Commands
-@bot.command()
+@bot.command(aliases=['emily', 'ping'])
 async def dankbots(ctx):
     """
     The bots are taking over!!
@@ -52,7 +48,7 @@ async def dankbots(ctx):
     await ctx.send(msg)
     await asyncio.sleep(1)
 
-@bot.command()
+@bot.command(aliases=['confused', 'fucking-what'])
 async def confus(ctx):
     """
     Randomly express your befuddlement.
@@ -60,22 +56,14 @@ async def confus(ctx):
     reply = await BotBrain.anconfus('')
     await ctx.send(reply)
     
-@bot.command()
+@bot.command(aliases=['drink'])
 async def drincc(ctx, *drink: str):
     """
     Booze recipes
     """
-    mixedDrink = ''
+    mixedDrink = ' '.join(drink)
     y = 0
-    if len(drink) == 4:
-        mixedDrink = str(drink[0] + " " + drink[1] + " " + drink[2] + " " + drink[3])
-    elif len(drink) == 3:
-        mixedDrink = str(drink[0] + " " + drink[1] + " " + drink[2])
-    elif len(drink) == 2:
-        mixedDrink = str(drink[0] + " " + drink[1])
-    elif len(drink) == 1:
-        mixedDrink = str(drink[0])
-    else:
+    if mixedDrink == '':
         await ctx.send("You spilled your drink.")
         return
 
@@ -84,7 +72,6 @@ async def drincc(ctx, *drink: str):
         await ctx.send("404 Drink not found, please try again.")
     else:
         Drinktionary = await BotBrain.drincc(url=url)
-        
         while y <= int(Drinktionary['Drink Length'])-1:
             ingredientString = ''
             drinkIngredients = list(Drinktionary["Drink " + str(y) + " Ingredients"])
@@ -101,7 +88,7 @@ async def drincc(ctx, *drink: str):
         await asyncio.sleep(1)
 
 #Soma2.0 Commands
-@bot.command()
+@bot.command(aliases=['reddit', 'subreddit'])
 async def sr(ctx, sbr: str):
     '''
     Searches for a random image in the specified subreddit
@@ -110,25 +97,17 @@ async def sr(ctx, sbr: str):
     await ctx.send(sbrPic)
     await asyncio.sleep(1)
     
-@bot.command()
+@bot.command(aliases=['cook', 'shokugeki'])
 async def food(ctx, *food: str):
     '''
     Searches foodnetwork.com for specified recipe
     '''
-    msg = BotBrain.cook(food)
-    await ctx.send(msg)
-    await asyncio.sleep(1)
-
-@bot.command()
-async def cook(ctx, *food: str):
-    '''
-    Searches foodnetwork.com for specified recipe
-    '''
-    msg = BotBrain.cook(food)
+    food = ' '.join(food)
+    msg = BotBrain.cook(fud=food)
     await ctx.send(msg)
     await asyncio.sleep(1)
     
-@bot.command()
+@bot.command(aliases=['warframe'])
 async def war(ctx, subCommand: str):
     '''
     Command to get Warframe data. %help war for a list of sub commands.
@@ -167,11 +146,12 @@ async def war(ctx, subCommand: str):
         await ctx.send("This isn't a valid command. Do you expect me to work using this?")
         await asyncio.sleep(1)
 
-@bot.command()
-async def wfmarket(ctx, item: str):
+@bot.command(aliases=['warframe-market', 'warmarket', 'market'])
+async def wfmarket(ctx, *item: str):
     '''
     Returns the top 5 prices from the searched item.
     '''
+    item = ' '.join(item)
     itemOriginal = item
     itemMod = item.replace(' ', '_')
     itemModLow = itemMod.lower()
@@ -210,8 +190,8 @@ async def cat(ctx):
     '''
     A random cat
     '''
-    cat = await BotBrain.rcat('')
-    await ctx.send(cat + ' :ramen: おあがりよ!')
+    url = json.loads(requests.get(url='http://aws.random.cat/meow').text)
+    await ctx.send(url['file'])
     await asyncio.sleep(1)
 
 @bot.command()
@@ -219,8 +199,8 @@ async def awoo(ctx):
     '''
     A random inferior creature
     '''
-    awoo = await BotBrain.rdog('')
-    await ctx.send(awoo + ' :ramen: おあがりよ!')
+    url = json.loads(requests.get(url='https://random.dog/woof.json').text)
+    await ctx.send(url['url'])
     await asyncio.sleep(1)
 
 # CAMERAN on_message custom functions
