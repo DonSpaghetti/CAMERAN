@@ -57,9 +57,48 @@ async def confus(ctx):
     """
     Randomly express your befuddlement.
     """
-    reply = await BotBrain.anconfus()
+    reply = await BotBrain.anconfus('')
     await ctx.send(reply)
     
+@bot.command()
+async def drincc(ctx, *drink: str):
+    """
+    Booze recipes
+    """
+    mixedDrink = ''
+    y = 0
+    if len(drink) == 4:
+        mixedDrink = str(drink[0] + " " + drink[1] + " " + drink[2] + " " + drink[3])
+    elif len(drink) == 3:
+        mixedDrink = str(drink[0] + " " + drink[1] + " " + drink[2])
+    elif len(drink) == 2:
+        mixedDrink = str(drink[0] + " " + drink[1])
+    elif len(drink) == 1:
+        mixedDrink = str(drink[0])
+    else:
+        await ctx.send("You spilled your drink.")
+        return
+
+    url = json.loads(requests.get(url='https://www.thecocktaildb.com/api/json/v1/1/search.php?s=' + mixedDrink).text)
+    if url['drinks'] == None:
+        await ctx.send("404 Drink not found, please try again.")
+    else:
+        Drinktionary = await BotBrain.drincc(url=url)
+        
+        while y <= int(Drinktionary['Drink Length'])-1:
+            ingredientString = ''
+            drinkIngredients = list(Drinktionary["Drink " + str(y) + " Ingredients"])
+            for x in range(len(drinkIngredients)):
+                ingredientString += str(drinkIngredients[x]) + '\n'
+            embed = discord.Embed(title=str(Drinktionary['Drink '+ str(y)]), value=str(Drinktionary['Drink '+ str(y)]), color=0xff69B4)
+            embed.add_field(name="Instructions", value=str(Drinktionary["Drink " + str(y) + " Instructions"]), inline=False)
+            embed.add_field(name="Ingredients", value=ingredientString, inline=False)
+            embed.set_thumbnail(url=str(Drinktionary["Drink " + str(y) + " Image"]))
+            #embed.add_field(name="Picture", value=str(Drinktionary["Drink " + str(y) + " Image"]), inline=False)
+            await ctx.send(embed=embed)
+            y = y + 1
+
+        await asyncio.sleep(1)
 
 #Soma2.0 Commands
 @bot.command()
@@ -72,7 +111,16 @@ async def sr(ctx, sbr: str):
     await asyncio.sleep(1)
     
 @bot.command()
-async def food(ctx, food: str):
+async def food(ctx, *food: str):
+    '''
+    Searches foodnetwork.com for specified recipe
+    '''
+    msg = BotBrain.cook(food)
+    await ctx.send(msg)
+    await asyncio.sleep(1)
+
+@bot.command()
+async def cook(ctx, *food: str):
     '''
     Searches foodnetwork.com for specified recipe
     '''

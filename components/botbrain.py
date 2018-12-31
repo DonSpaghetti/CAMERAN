@@ -32,9 +32,10 @@ class BotBrain():
     gameru = Object(id='363477346784903168')
     
     # for the %cook command
-    async def cook(food):
+    async def cook(self, fud):
+        result = ''
         search = "http://www.foodnetwork.com/search/"
-        food = food.replace(' ', '-')
+        food = fud.replace(' ', '-')
         url = search + food + "-"
         with urllib.request.urlopen(url) as response:
             html = response.read()
@@ -46,7 +47,7 @@ class BotBrain():
     
     
     #for the $confus command
-    async def anconfus():
+    async def anconfus(self):
         ion = [
         'https://i.kym-cdn.com/photos/images/original/000/012/974/cat_im_confus20110724-22047-q16ber.jpg',
         'https://media.giphy.com/media/l3q2K5jinAlChoCLS/200w.gif',
@@ -56,13 +57,47 @@ class BotBrain():
         reply = (random.choice(ion))
         return reply
     
-    
-    async def rcat(url):
+    async def drincc(url):
+        z = 0
+        y = 1
+        drinkLength = len(url['drinks'])
+        Drinktionary = {}
+        for x in range(drinkLength):
+            drinkinstructions = url['drinks'][x]['strInstructions']
+            drinkName = url['drinks'][x]['strDrink']
+            drinkImage = url['drinks'][x]['strDrinkThumb']
+            drinkIL = []
+            drinkMS = []
+            drinkILMS = []
+            Drink = {}
+            while y <= 15:
+                if (url['drinks'][x]['strIngredient' + str(y)] is '') or (
+                        url['drinks'][x]['strIngredient' + str(y)] is ' ') or (
+                        url['drinks'][x]['strIngredient' + str(y)] is None):
+                    y = y + 1
+                else:
+                    drinkMS.append(url['drinks'][x]['strMeasure' + str(y)])
+                    drinkIL.append(url['drinks'][x]['strIngredient' + str(y)])
+                    drinkILMS.append(drinkMS[z] + " " + drinkIL[z])
+                    y = y + 1
+                    z = z + 1
+                Drink = { "Drink " + str(x) : drinkName,
+                          "Drink " + str(x) + " Instructions": drinkinstructions,
+                          "Drink " + str(x) + " Ingredients": drinkILMS,
+                          "Drink " + str(x) + " Image" : drinkImage,
+                          "Drink Length" : drinkLength,
+                         }
+            Drinktionary.update(Drink)
+            y = 1
+            z = 0
+        return Drinktionary
+
+    async def rcat(self):
         url = json.loads(requests.get(url='http://aws.random.cat/meow').text)
         cat = url['file']
         return cat
     
-    async def rdog(url):
+    async def rdog(self):
         url = json.loads(requests.get(url='https://random.dog/woof.json').text)
         dog = url['url']
         return dog
