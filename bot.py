@@ -1,5 +1,6 @@
 from discord.ext import commands
 
+import os
 import discord
 import asyncio
 import random
@@ -11,22 +12,22 @@ from components.botbrain import BotBrain
 from components.warframe import Warframe
 from datetime import datetime
 
+bot = commands.Bot(command_prefix=('$', '%', 'd$'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
 
-description = '''Master Masquerader! Messenger of Memes! CAMERAN!'''
-
-bot = commands.Bot(command_prefix=('$', '%', 'd$'), description=description)
-filename = 'models/logs/log' + str(datetime.now()) + '.txt'
+if os.name == 'nt': # Windows
+    filename = 'C:\\logs\\log' + str(datetime.now()) + '.txt'
+else: # Not Windows
+    filename = 'models/logs/log' + str(datetime.now()) + '.txt'
 
 @bot.event
 async def on_ready():
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)
-    await BotBrain.getDrinks('')
-    print(await BotBrain.getDrinks(''))
+    # await BotBrain.getDrinks('')
+    # print(await BotBrain.getDrinks(''))
     print('------')
 
-#The following two commands are examples from the discord.py rewrite - will be expanded upon later.
 @bot.command(aliases=['marshalls-fucking-dice-roll-command'])
 async def roll(ctx, dice: str):
     """Rolls a dice in NdN format."""
@@ -39,7 +40,7 @@ async def roll(ctx, dice: str):
     result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
     await ctx.send(result)
 
-#Dankbot420 Commands
+# Dankbot420 Commands - The following commands are programmed and created by DonSpaghetti
 @bot.command(aliases=['emily', 'ping'])
 async def dankbots(ctx):
     """
@@ -58,17 +59,12 @@ async def confus(ctx):
     reply = await BotBrain.anconfus('')
     await ctx.send(reply)
 
-@bot.command(aliases=['drink'])
+@bot.command(aliases=['drink', 'margaritaville'])
 async def drincc(ctx, *drink: str):
     """
     Booze recipes
     """
     mixedDrink = ' '.join(drink)
-
-    # with open('components/drinks/alcoholic.json', 'r') as f:
-    #     alcoholicDrinks: dict = json.load(f)
-    # with open('components/drinks/non_alcoholic.json', 'r') as f:
-    #     nonAlcoholicDrinks: dict = json.load(f)
 
     y = 0
     if mixedDrink == '':
@@ -79,9 +75,36 @@ async def drincc(ctx, *drink: str):
 
     if url['drinks'] == None:
         await ctx.send("404 Drink not found, please try again.")
+
     else:
         Drinktionary = await BotBrain.drincc(url=url)
-        while y <= int(Drinktionary['Drink Length'])-1:
+        dLength = int(Drinktionary['Drink Length'])
+        # I returned more than one drink. Here's a drink menu. But I'll also return Drink 0 as well.
+        if dLength > 1:
+            drinkString = ''
+            for x in range(dLength):
+                drinkString += str(Drinktionary['Drink ' + str(x)]) + '\n'
+            embed = discord.Embed(title="Drink Menu", value=str(dLength) + ' Drinks', color=0xff69B4)
+            embed.add_field(name="I returned these " + str(dLength) + ' Drinks', value=drinkString, inline=False)
+            embed.set_thumbnail(url="https://i.imgur.com/XjYRDV1.png")
+            await ctx.send(embed=embed)
+            await asyncio.sleep(1)
+
+            await ctx.send("I'll return the first drink in the list, maybe you wanted that.")
+            await asyncio.sleep(1)
+
+            ingredientString = ''
+            drinkIngredients = list(Drinktionary["Drink 0 Ingredients"])
+            for x in range(len(drinkIngredients)):
+                ingredientString += str(drinkIngredients[x]) + '\n'
+            embed = discord.Embed(title=str(Drinktionary['Drink 0']), value=str(Drinktionary['Drink 0']), color=0xff69B4)
+            embed.add_field(name="Instructions", value=str(Drinktionary['Drink 0 Instructions']), inline=False)
+            embed.add_field(name="Ingredients", value=ingredientString, inline=False)
+            embed.set_thumbnail(url=str(Drinktionary["Drink 0 Image"]))
+            await ctx.send(embed=embed)
+            await asyncio.sleep(1)
+        
+        else: # originally designed to return all drinks, will just return one now.
             ingredientString = ''
             drinkIngredients = list(Drinktionary["Drink " + str(y) + " Ingredients"])
             for x in range(len(drinkIngredients)):
@@ -90,13 +113,12 @@ async def drincc(ctx, *drink: str):
             embed.add_field(name="Instructions", value=str(Drinktionary["Drink " + str(y) + " Instructions"]), inline=False)
             embed.add_field(name="Ingredients", value=ingredientString, inline=False)
             embed.set_thumbnail(url=str(Drinktionary["Drink " + str(y) + " Image"]))
-            #embed.add_field(name="Picture", value=str(Drinktionary["Drink " + str(y) + " Image"]), inline=False)
             await ctx.send(embed=embed)
             y = y + 1
 
         await asyncio.sleep(1)
 
-#Soma2.0 Commands
+# Soma2.0 Commands - the following code / commands are programmed and created by Goldstorm
 @bot.command(aliases=['reddit', 'subreddit'])
 async def sr(ctx, sbr: str):
     '''
@@ -194,7 +216,7 @@ async def wfmarket(ctx, *item: str):
         await ctx.send(embed=embed)
     await asyncio.sleep(1)
     
-@bot.command()
+@bot.command(aliases=['kitty', 'superior-creature', 'not-dog', 'meow'])
 async def cat(ctx):
     '''
     A random cat
@@ -203,7 +225,7 @@ async def cat(ctx):
     await ctx.send(url['file'])
     await asyncio.sleep(1)
 
-@bot.command()
+@bot.command(aliases=['dog', 'woof'])
 async def awoo(ctx):
     '''
     A random inferior creature
@@ -244,6 +266,4 @@ async def on_message(message):
     await bot.wait_until_ready()
     await bot.process_commands(message)
 
-
-token = BotBrain.secrets['CAMERANToken']
-bot.run(token)
+bot.run(BotBrain.secrets['CAMERANToken'])
