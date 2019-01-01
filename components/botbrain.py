@@ -105,13 +105,19 @@ class BotBrain():
         return random_post.url
     
     async def getDrinks(drinks: str):
+        aDrink = {}
+        nDrink = {}
         alcohol = json.loads(requests.get(url='https://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Alcoholic').text)
         noAlcohol = json.loads(requests.get(url='https://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Non_Alcoholic').text)
         with open('components/drinks/alcoholic.json', 'w') as f:
-            json.dump(alcohol, f, indent=4, sort_keys=True)
+            for x in range(len(alcohol['drinks'])):
+                aDrink[x] = alcohol['drinks'][x]['strDrink']
+            json.dump(aDrink, f, indent=4, sort_keys=True)
             f.close()
         with open('components/drinks/non_alcoholic.json', 'w') as f:
-            json.dump(noAlcohol, f, indent=4, sort_keys=True)
+            for x in range(len(noAlcohol['drinks'])):
+                nDrink[x] = noAlcohol['drinks'][x]['strDrink']
+            json.dump(nDrink, f, indent=4, sort_keys=True)
             f.close()
         
         return 'Drinks Ordered!'
