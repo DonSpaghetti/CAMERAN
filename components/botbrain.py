@@ -31,6 +31,7 @@ class BotBrain():
     holes = Object(id='320388745092399105')
     gameru = Object(id='363477346784903168')
     
+    
     # for the %cook command
     async def cook(fud: str):
         result = ''

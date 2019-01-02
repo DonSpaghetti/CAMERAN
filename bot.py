@@ -14,6 +14,7 @@ from datetime import datetime
 
 bot = commands.Bot(command_prefix=('$', '%', 'd$'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
 
+
 if os.name == 'nt': # Windows
     filename = 'C:\\logs\\log' + str(datetime.now()) + '.txt'
 else: # Not Windows
@@ -27,7 +28,7 @@ async def on_ready():
     # await BotBrain.getDrinks('')
     # print(await BotBrain.getDrinks(''))
     print('------')
-
+    
 @bot.command(aliases=['marshalls-fucking-dice-roll-command'])
 async def roll(ctx, dice: str):
     """Rolls a dice in NdN format."""
@@ -240,12 +241,12 @@ async def on_message(message):
     # we do not want the bot to reply to itself
     if message.author.id == bot.user.id:
         return
-
-    elif message.content.startswith('lmao'.lower()):
-        await message.channel.send('ayy')
-
-    elif message.content.startswith('ayy'.lower()):
-        await message.channel.send('lmao')
+    # Taking out until we can specifically tell it who to do this to.
+    # if message.content.startswith('lmao'.lower()):
+    #     await message.channel.send('ayy')
+    #
+    # elif message.content.startswith('ayy'.lower()):
+    #     await message.channel.send('lmao')
 
     elif 'move to austin' in message.content.lower():
         await message.channel.send('https://us.v-cdn.net/6025735/uploads/editor/88/lsb0v3uh7swy.gif')
