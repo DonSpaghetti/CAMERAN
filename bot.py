@@ -14,11 +14,7 @@ from datetime import datetime
 
 bot = commands.Bot(command_prefix=('$', '%', 'd$'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
 
-
-if os.name == 'nt': # Windows
-    filename = 'C:\\logs\\log' + str(datetime.now()) + '.txt'
-else: # Not Windows
-    filename = 'models/logs/log' + str(datetime.now()) + '.txt'
+filename = 'models/logs/log' + str(datetime.now()) + '.txt'
 
 @bot.event
 async def on_ready():
@@ -262,7 +258,11 @@ async def on_message(message):
 
     elif 'drink seltzer live forever' in message.content.lower():
         await message.channel.send('DRINK SELTZER NEVER DIE')
-    print(f"{message.channel}, {message.author}, {message.author.name}, {message.content}", file=open(filename, 'a'))
+
+    if os.name == 'nt':  # Windows
+        print(f"{message.channel}, {message.author}, {message.author.name}, {message.content}")
+    else:
+        print(f"{message.channel}, {message.author}, {message.author.name}, {message.content}", file=open(filename, 'a'))
 
     await bot.wait_until_ready()
     await bot.process_commands(message)
