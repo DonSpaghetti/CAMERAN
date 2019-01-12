@@ -52,6 +52,7 @@ async def dankbots(ctx):
     await ctx.send(msg)
     await asyncio.sleep(1)
 
+
 @bot.command(aliases=['confused', 'fucking-what'])
 async def confus(ctx):
     """
@@ -59,6 +60,16 @@ async def confus(ctx):
     """
     reply = await BotBrain.anconfus('')
     await ctx.send(reply)
+
+
+@bot.command(aliases=['gojira', 'monster-movie'])
+async def godzilla(ctx):
+    """
+    Which Kaiju movie should you watch? Wheel Decide!
+    """
+    reply = await BotBrain.zillamovie('')
+    await ctx.send('You should watch '+reply)
+
 
 @bot.command(aliases=['drink', 'margaritaville'])
 async def drincc(ctx, *drink: str):
