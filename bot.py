@@ -281,7 +281,7 @@ async def on_message(message):
     #
     # elif 'drink seltzer live forever' in message.content.lower():
     #     await message.channel.send('DRINK SELTZER NEVER DIE')
-    print(f"{message.channel}, {message.author}, {message.author.name}, {message.content}")
+    # print(f"{message.channel}, {message.author}, {message.author.name}, {message.content}")
 
     await bot.wait_until_ready()
     await bot.process_commands(message)
