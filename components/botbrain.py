@@ -57,7 +57,21 @@ class BotBrain():
         ]
         reply = (random.choice(ion))
         return reply
-    
+
+    # for the $godzilla command
+    async def zillamovie(self):
+        textfile = open('components/kaijumovielist.txt', 'r')
+        list1 = textfile.readlines()
+        list2 = []
+        for item in list1:
+            number = 0
+            while number < 73:
+                list2.append(item)
+                number += 1
+
+        reply = (random.choice(list2))
+        return reply
+
     async def drincc(url):
         z = 0
         y = 1
