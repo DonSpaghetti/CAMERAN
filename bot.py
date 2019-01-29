@@ -12,8 +12,17 @@ from components.botbrain import BotBrain
 from components.warframe import Warframe
 from datetime import datetime
 
-bot = commands.Bot(command_prefix=('$', '%', 'd$'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
+# Master Branch
+token = BotBrain.secrets['CAMERANToken']
+bot = commands.Bot(command_prefix=('%'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
 
+# Dev branch
+# token = BotBrain.secrets['SomaToken']
+# bot = commands.Bot(command_prefix=('d%'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
+
+# Other Branches for quick on/off use
+# token = BotBrain.secrets['DankToken']
+# bot = commands.Bot(command_prefix=('d$'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
 
 if os.name == 'nt': # Windows
     filename = 'C:\\logs\\log' + str(datetime.now()) + '.txt'
@@ -259,21 +268,21 @@ async def on_message(message):
     # elif message.content.startswith('ayy'.lower()):
     #     await message.channel.send('lmao')
 
-    elif 'move to austin' in message.content.lower():
-        await message.channel.send('https://us.v-cdn.net/6025735/uploads/editor/88/lsb0v3uh7swy.gif')
-
-    elif 'i like attack on titan' in message.content.lower():
-        await message.channel.send('https://i.imgur.com/4dznW7t.png')
-
-    elif 'good bot' in message.content.lower():
-        await message.channel.send('arigato gozaimasu senpai <3 uwu')
-
-    elif 'eat cheese live forever' in message.content.lower():
-        await message.channel.send('EAT CHEESE NEVER DIE')
-
-    elif 'drink seltzer live forever' in message.content.lower():
-        await message.channel.send('DRINK SELTZER NEVER DIE')
-    print(f"{message.channel}, {message.author}, {message.author.name}, {message.content}", file=open(filename, 'a'))
+    # elif 'move to austin' in message.content.lower():
+    #     await message.channel.send('https://us.v-cdn.net/6025735/uploads/editor/88/lsb0v3uh7swy.gif')
+    #
+    # elif 'i like attack on titan' in message.content.lower():
+    #     await message.channel.send('https://i.imgur.com/4dznW7t.png')
+    #
+    # elif 'good bot' in message.content.lower():
+    #     await message.channel.send('arigato gozaimasu senpai <3 uwu')
+    #
+    # elif 'eat cheese live forever' in message.content.lower():
+    #     await message.channel.send('EAT CHEESE NEVER DIE')
+    #
+    # elif 'drink seltzer live forever' in message.content.lower():
+    #     await message.channel.send('DRINK SELTZER NEVER DIE')
+    print(f"{message.channel}, {message.author}, {message.author.name}, {message.content}")
 
     await bot.wait_until_ready()
     await bot.process_commands(message)
