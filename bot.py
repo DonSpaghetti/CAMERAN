@@ -267,7 +267,6 @@ async def on_message(message):
     #
     # elif message.content.startswith('ayy'.lower()):
     #     await message.channel.send('lmao')
-
     # elif 'move to austin' in message.content.lower():
     #     await message.channel.send('https://us.v-cdn.net/6025735/uploads/editor/88/lsb0v3uh7swy.gif')
     #
