@@ -8,23 +8,25 @@ from operator import itemgetter
 
 # pprint.pprint(r.json())
 
-class Warframe():
-    
+class Warframe:
+
     async def cetus(url):
-        url = json.loads(requests.get(url='https://api.warframestat.us/pc/cetusCycle').text)
+        url = json.loads(requests.get(url="https://api.warframestat.us/pc/cetusCycle").content)
         # r = json.loads(requests.get(url='https://drops.warframestat.us/data/all.json').text)
-        
         return url['shortString']
-    
-    async def alerts(url):
-        jsonAlert = {}
+
+    async def nightwave(url):# WIP - will just give a basic list of what's new this week.
+        what_they_want = []
         x = 0
-        url = json.loads(requests.get(url='https://ws.warframestat.us/pc/alerts').text)
-        for alert in url:
-            jsonAlert[str(x)] = alert['eta']
-            x = x + 1
-        return str(jsonAlert)
-    
+        url = json.loads(requests.get(url="https://api.warframestat.us/pc/nightwave").content)
+        missions = len(url['activeChallenges'])
+        mission = 0
+        while mission < missions:
+            quest = url['activeChallenges'][mission]
+            what_they_want.append({mission : quest['desc']})
+            mission = mission+1
+        return str(what_they_want)
+
     async def randomWar(url):
         url = json.loads(requests.get(url='https://ws.warframestat.us/warframes').text)
         xFrame = random.randint(0, len(url))
@@ -54,6 +56,7 @@ class Warframe():
     
     async def bestPriceFor(url):
         sortList = []
+        sortedList = []
         x = 0
         
         for pl in url['payload']['orders']:
