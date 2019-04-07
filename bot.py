@@ -16,13 +16,13 @@ from datetime import datetime
 # token = BotBrain.secrets['CAMERANToken']
 # bot = commands.Bot(command_prefix=('%'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
 
-# # Dev branch
-# token = BotBrain.secrets['SomaToken']
-# bot = commands.Bot(command_prefix=('d%'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
+# Dev branch
+token = BotBrain.secrets['SomaToken']
+bot = commands.Bot(command_prefix=('d%'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
 
-# Other Branches for quick on/off use
-token = BotBrain.secrets['DankToken']
-bot = commands.Bot(command_prefix=('d$'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
+# Master Branch
+# token = BotBrain.secrets['CAMERANToken']
+# bot = commands.Bot(command_prefix=('%'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
 
 if os.name == 'nt': # Windows
     filename = 'C:\\logs\\log' + str(datetime.now()) + '.txt'
