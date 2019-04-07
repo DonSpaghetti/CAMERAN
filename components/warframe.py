@@ -15,9 +15,21 @@ class Warframe:
         # r = json.loads(requests.get(url='https://drops.warframestat.us/data/all.json').text)
         return url['shortString']
 
+    async def bounties(url):
+        # Returns a list of syndicates and their missions
+        ostron_rewards = {}
+        syndicates = json.loads(requests.get(url="https://api.warframestat.us/pc/syndicateMissions").content)
+        for syndicate in syndicates:
+            if syndicate['syndicate'] == 'Ostrons':
+                x = 1
+                for ostron_jobs in syndicate['jobs']:
+                    ostron_rewards[str(x)] = ostron_jobs['rewardPool']
+                    x = x + 1
+
+        return ostron_rewards
+
     async def nightwave(url):# WIP - will just give a basic list of what's new this week.
         what_they_want = []
-        x = 0
         url = json.loads(requests.get(url="https://api.warframestat.us/pc/nightwave").content)
         missions = len(url['activeChallenges'])
         mission = 0
@@ -74,3 +86,4 @@ class Warframe:
                 x = x + 1
         
         return str(sortedList[:5])
+
