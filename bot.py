@@ -20,6 +20,12 @@ from datetime import datetime
 # token = BotBrain.secrets['SomaToken']
 # bot = commands.Bot(command_prefix=('d%'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
 
+# Master Branch
+# token = BotBrain.secrets['CAMERANToken']
+# bot = commands.Bot(command_prefix=('%'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
+
+
+
 # # Other Branches for quick on/off use
 token = BotBrain.secrets['DankToken']
 bot = commands.Bot(command_prefix=('d$'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
@@ -274,6 +280,7 @@ async def on_message(message):
     if message.author.id == bot.user.id:
         return
     print(f"{message.channel}, {message.author}, {message.author.name}, {message.content}")
+
     await bot.wait_until_ready()
     await bot.process_commands(message)
 
