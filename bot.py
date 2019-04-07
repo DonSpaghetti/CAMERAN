@@ -24,9 +24,6 @@ from datetime import datetime
 token = BotBrain.secrets['DankToken']
 bot = commands.Bot(command_prefix=('d$'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
 
-
-
-
 if os.name == 'nt': # Windows
     filename = 'C:\\logs\\log' + str(datetime.now()) + '.txt'
 else: # Not Windows
@@ -168,6 +165,7 @@ async def war(ctx, subCommand: str):
     Command to get Warframe data. %help war for a list of sub commands.
     %war cetus - Returns if it's Day or Night in Cetus.
     %war nightwave - Returns current list of garbage Nora wants you to do. (WIP)
+    %war bounties - Gives Ostron and Solaris reward rotation for bounties
     %war chance - Are you feeling lucky?
     %war weapon - You didn't like the weapon? Awww
     %war frame - What, you didn't like the frame? Then what's the point!?
@@ -199,6 +197,19 @@ async def war(ctx, subCommand: str):
     elif subCommand.lower() == "chance":
         subCommand = await Warframe.randomWar('')
         await ctx.send(subCommand)
+        await asyncio.sleep(1)
+    elif subCommand.lower() == "bounties":
+        cetus_bounties:dict = await Warframe.bounties('')
+        embed = discord.Embed(title="Cetus Bounty Rewards", description="Current Rewards from Cetus Bounties", color=0xff69B4)
+        x = 1
+        while x <= len(cetus_bounties):
+            reward_string = ''
+            rewards = cetus_bounties[str(x)]
+            for reward in rewards:
+                reward_string += reward + '\n'
+            embed.add_field(name="Rank {} Rewards".format(str(x)), value=reward_string, inline=False)
+            x = x + 1
+        await ctx.send(embed=embed)
         await asyncio.sleep(1)
     else:
         await ctx.send("This isn't a valid command. Do you expect me to work using this?")
