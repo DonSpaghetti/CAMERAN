@@ -10,23 +10,54 @@ from operator import itemgetter
 
 class Warframe:
 
-    async def cetus(url):
+    async def old_cetus(url):
         url = json.loads(requests.get(url="https://api.warframestat.us/pc/cetusCycle").content)
         # r = json.loads(requests.get(url='https://drops.warframestat.us/data/all.json').text)
         return url['shortString']
 
-    async def bounties(url):
+    async def cetus(url):
         # Returns a list of syndicates and their missions
         ostron_rewards = {}
+        cetus_status = []
         syndicates = json.loads(requests.get(url="https://api.warframestat.us/pc/syndicateMissions").content)
+        time = json.loads(requests.get(url="https://api.warframestat.us/pc/cetusCycle").content)
         for syndicate in syndicates:
             if syndicate['syndicate'] == 'Ostrons':
                 x = 1
+
                 for ostron_jobs in syndicate['jobs']:
                     ostron_rewards[str(x)] = ostron_jobs['rewardPool']
                     x = x + 1
+                eta = syndicate['eta']
+                cetus_cycle = time['shortString']
 
-        return ostron_rewards
+                cetus_status.append(eta)
+                cetus_status.append(cetus_cycle)
+                cetus_status.append(ostron_rewards)
+
+        return cetus_status
+
+    async def fortuna(url):
+        # Returns a list of syndicates and their missions
+        solaris_rewards = {}
+        fortuna_status = []
+        syndicates = json.loads(requests.get(url="https://api.warframestat.us/pc/syndicateMissions").content)
+        time = json.loads(requests.get(url="https://api.warframestat.us/pc/vallisCycle").content)
+        for syndicate in syndicates:
+            if syndicate['syndicate'] == 'Solaris United':
+                x = 1
+
+                for solaris_jobs in syndicate['jobs']:
+                    solaris_rewards[str(x)] = solaris_jobs['rewardPool']
+                    x = x + 1
+                eta = syndicate['eta']
+                vallis_cycle = time['shortString']
+
+                fortuna_status.append(eta)
+                fortuna_status.append(vallis_cycle)
+                fortuna_status.append(solaris_rewards)
+
+        return fortuna_status
 
     async def nightwave(url):# WIP - will just give a basic list of what's new this week.
         what_they_want = []

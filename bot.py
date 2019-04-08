@@ -165,7 +165,7 @@ async def war(ctx, subCommand: str):
     Command to get Warframe data. %help war for a list of sub commands.
     %war cetus - Returns if it's Day or Night in Cetus.
     %war nightwave - Returns current list of garbage Nora wants you to do. (WIP)
-    %war bounties - Gives Ostron and Solaris reward rotation for bounties
+    %war cetus or fortuna - Gives Ostron or Solaris reward rotation for bounties and status
     %war chance - Are you feeling lucky?
     %war weapon - You didn't like the weapon? Awww
     %war frame - What, you didn't like the frame? Then what's the point!?
@@ -178,7 +178,7 @@ async def war(ctx, subCommand: str):
         await ctx.send("This isn't a valid command. Do you expect me to work using this?")
         await asyncio.sleep(1)
 
-    if subCommand.lower() == "cetus":
+    if subCommand.lower() == "time":
         subCommand = await Warframe.cetus('')
         await ctx.send(subCommand)
         await asyncio.sleep(1)
@@ -198,13 +198,29 @@ async def war(ctx, subCommand: str):
         subCommand = await Warframe.randomWar('')
         await ctx.send(subCommand)
         await asyncio.sleep(1)
-    elif subCommand.lower() == "bounties":
-        cetus_bounties:dict = await Warframe.bounties('')
-        embed = discord.Embed(title="Cetus Bounty Rewards", description="Current Rewards from Cetus Bounties", color=0xff69B4)
+    elif subCommand.lower() == "cetus":
+        fortuna_status:list = await Warframe.cetus('')
+        embed = discord.Embed(title="Cetus Bounties", description="Next Rotation: {}".format(fortuna_status[0]), color=0xff69B4)
         x = 1
-        while x <= len(cetus_bounties):
+        embed.add_field(name="Day / Night Cycle".format(str(x)), value=fortuna_status[1], inline=False)
+        while x <= len(fortuna_status[2]):
             reward_string = ''
-            rewards = cetus_bounties[str(x)]
+            rewards = fortuna_status[2][str(x)]
+            for reward in rewards:
+                reward_string += reward + '\n'
+            embed.add_field(name="Rank {} Rewards".format(str(x)), value=reward_string, inline=False)
+            x = x + 1
+        await ctx.send(embed=embed)
+        await asyncio.sleep(1)
+    elif subCommand.lower() == "fortuna":
+        fortuna_status: list = await Warframe.fortuna('')
+        embed = discord.Embed(title="Fortuna Bounties", description="Next Rotation: {}".format(fortuna_status[0]),
+                              color=0xff69B4)
+        x = 1
+        embed.add_field(name="Warm / Cold Cycle".format(str(x)), value=fortuna_status[1], inline=False)
+        while x <= len(fortuna_status[2]):
+            reward_string = ''
+            rewards = fortuna_status[2][str(x)]
             for reward in rewards:
                 reward_string += reward + '\n'
             embed.add_field(name="Rank {} Rewards".format(str(x)), value=reward_string, inline=False)
