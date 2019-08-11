@@ -10,39 +10,33 @@ from operator import itemgetter
 
 class Warframe:
 
-    async def old_cetus(url):
-        url = json.loads(requests.get(url="https://api.warframestat.us/pc/cetusCycle").content)
-        # r = json.loads(requests.get(url='https://drops.warframestat.us/data/all.json').text)
-        return url['shortString']
+    def __init__(self):
+        pass
 
-    async def cetus(url):
+    async def cetus(self, syndicates, time):
         # Returns a list of syndicates and their missions
         ostron_rewards = {}
         cetus_status = []
-        syndicates = json.loads(requests.get(url="https://api.warframestat.us/pc/syndicateMissions").content)
-        time = json.loads(requests.get(url="https://api.warframestat.us/pc/cetusCycle").content)
         for syndicate in syndicates:
             if syndicate['syndicate'] == 'Ostrons':
                 x = 1
 
                 for ostron_jobs in syndicate['jobs']:
+
                     ostron_rewards[str(x)] = ostron_jobs['rewardPool']
                     x = x + 1
                 eta = syndicate['eta']
                 cetus_cycle = time['shortString']
-
                 cetus_status.append(eta)
                 cetus_status.append(cetus_cycle)
                 cetus_status.append(ostron_rewards)
 
         return cetus_status
 
-    async def fortuna(url):
+    async def fortuna(url, syndicates, time):
         # Returns a list of syndicates and their missions
         solaris_rewards = {}
         fortuna_status = []
-        syndicates = json.loads(requests.get(url="https://api.warframestat.us/pc/syndicateMissions").content)
-        time = json.loads(requests.get(url="https://api.warframestat.us/pc/vallisCycle").content)
         for syndicate in syndicates:
             if syndicate['syndicate'] == 'Solaris United':
                 x = 1

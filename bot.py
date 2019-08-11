@@ -12,7 +12,7 @@ from components.botbrain import BotBrain
 from components.warframe import Warframe
 from datetime import datetime
 
-# # Master Branch
+# Master Branch
 # token = BotBrain.secrets['CAMERANToken']
 # bot = commands.Bot(command_prefix=('%'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
 
@@ -20,9 +20,9 @@ from datetime import datetime
 token = BotBrain.secrets['SomaToken']
 bot = commands.Bot(command_prefix=('d%'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
 
-# Master Branch
-# token = BotBrain.secrets['CAMERANToken']
-# bot = commands.Bot(command_prefix=('%'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
+# Debugging
+# token = BotBrain.secrets['DankToken']
+# bot = commands.Bot(command_prefix=('$'), description='''Master Masquerader! Messenger of Memes! CAMERAN!''')
 
 if os.name == 'nt': # Windows
     filename = 'C:\\logs\\log' + str(datetime.now()) + '.txt'
@@ -171,6 +171,7 @@ async def war(ctx, subCommand: str):
     %war frame - What, you didn't like the frame? Then what's the point!?
     '''
 
+    war = Warframe()
 
     try:
         subCommand
@@ -179,7 +180,7 @@ async def war(ctx, subCommand: str):
         await asyncio.sleep(1)
 
     if subCommand.lower() == "time":
-        subCommand = await Warframe.cetus('')
+        subCommand = await war.cetus('')
         await ctx.send(subCommand)
         await asyncio.sleep(1)
     elif subCommand.lower() == "nightwave":
@@ -199,21 +200,31 @@ async def war(ctx, subCommand: str):
         await ctx.send(subCommand)
         await asyncio.sleep(1)
     elif subCommand.lower() == "cetus":
-        fortuna_status:list = await Warframe.cetus('')
-        embed = discord.Embed(title="Cetus Bounties", description="Next Rotation: {}".format(fortuna_status[0]), color=0xff69B4)
+        syndicates = json.loads(requests.get(url="https://api.warframestat.us/pc/syndicateMissions").content)
+        time = json.loads(requests.get(url="https://api.warframestat.us/pc/cetusCycle").content)
+        cetus_status:list = await war.cetus(syndicates=syndicates, time=time)
+
+        embed = discord.Embed(title="Cetus Bounties", description="Next Rotation: {}".format(cetus_status[0]), color=0xff69B4)
         x = 1
-        embed.add_field(name="Day / Night Cycle".format(str(x)), value=fortuna_status[1], inline=False)
-        while x <= len(fortuna_status[2]):
+        embed.add_field(name="Day / Night Cycle".format(str(x)), value=cetus_status[1], inline=False)
+        while x <= len(cetus_status[2]):
             reward_string = ''
-            rewards = fortuna_status[2][str(x)]
+            rewards = cetus_status[2][str(x)]
+            if len(rewards) <=3:
+                await ctx.send(embed=embed)
+                await asyncio.sleep(1)
+                break
             for reward in rewards:
-                reward_string += reward + '\n'
+                reward_string += reward + ' \n'
             embed.add_field(name="Rank {} Rewards".format(str(x)), value=reward_string, inline=False)
             x = x + 1
         await ctx.send(embed=embed)
         await asyncio.sleep(1)
+
     elif subCommand.lower() == "fortuna":
-        fortuna_status: list = await Warframe.fortuna('')
+        syndicates = json.loads(requests.get(url="https://api.warframestat.us/pc/syndicateMissions").content)
+        time = json.loads(requests.get(url="https://api.warframestat.us/pc/vallisCycle").content)
+        fortuna_status: list = await war.fortuna(syndicates=syndicates, time=time)
         embed = discord.Embed(title="Fortuna Bounties", description="Next Rotation: {}".format(fortuna_status[0]),
                               color=0xff69B4)
         x = 1
